@@ -1,0 +1,24 @@
+{
+  "name": "cryptosys-events-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "node": "^12.18.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/polytechnique-montr-al/log89xx/20-3/eos-nation/cryptosys-events-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/polytechnique-montr-al/log89xx/20-3/eos-nation/cryptosys-events-backend/issues"
+  },
+  "homepage": "https://gitlab.com/polytechnique-montr-al/log89xx/20-3/eos-nation/cryptosys-events-backend#readme"
+}
