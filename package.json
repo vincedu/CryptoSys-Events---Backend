@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "dependencies": {
     "apollo-server-express": "^2.18.1",
+    "aws-sdk": "^2.767.0",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
@@ -28,7 +29,8 @@
     "lint": "eslint ."
   },
   "_moduleAliases": {
-    "@config": "config/config.js"
+    "@config": "config/config.js",
+    "@db": "src/db"
   },
   "repository": {
     "type": "git",

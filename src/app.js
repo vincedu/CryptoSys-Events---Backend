@@ -2,14 +2,14 @@ require("dotenv").config()
 require("module-alias/register")
 const { ApolloServer } = require("apollo-server-express");
 const express = require("express");
-const { setupMongoose } = require("./db/mongooseSetup");
+const { setupMongoose } = require("@db/mongooseSetup");
 const { schema } = require("./schema");
 
 const isDevelopmentEnv = process.env.NODE_ENV === "development";
 
 const app = express();
 const server = new ApolloServer({
-    schema,
+    ...schema,
     playground: isDevelopmentEnv, 
 });
 server.applyMiddleware({ app });

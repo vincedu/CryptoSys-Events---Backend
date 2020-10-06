@@ -10,6 +10,11 @@
 MONGODB_URI: Find it on MongoDB Atlas or ask team.
 NODE_ENV: "development" or "prod"
 NODE_PORT: Port the server is run on. (e.g. 4000)
+
+AWS_ACCESS_KEY_ID: AWS Access key ID
+AWS_SECRET_ACCESS_KEY: AWS Secret access key
+AWS_S3_REGION: AWS Region in which S3 db is hosted
+AWS_S3_BUCKET: AWS S3 bucket name
 ```
 
 ### VSCode specific
