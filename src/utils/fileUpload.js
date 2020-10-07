@@ -4,7 +4,7 @@ const { s3 } = require("@db/s3")
 
 const uploadFile = (createReadStream, filename, mimetype) => {
 
-    const fileKey = `${uuid()}${extname(filename)}`;
+    const fileKey = `public/${uuid()}${extname(filename)}`;
     // Setting up S3 upload parameters
     const params = {
         Key: fileKey,

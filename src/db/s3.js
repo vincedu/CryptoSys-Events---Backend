@@ -9,10 +9,7 @@ const s3 = new AWS.S3({
     params: {
         ACL: "public-read",
         Bucket: process.env.AWS_S3_BUCKET,
-    },
-    app: {
-        storageDir: "public",
-    },
+    }
 });
 
 module.exports = {

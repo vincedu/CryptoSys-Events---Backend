@@ -30,7 +30,8 @@
   },
   "_moduleAliases": {
     "@config": "config/config.js",
-    "@db": "src/db"
+    "@db": "src/db",
+    "@utils": "src/utils"
   },
   "repository": {
     "type": "git",
