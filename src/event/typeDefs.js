@@ -9,6 +9,7 @@ const typeDefs = gql`
         description: String!
         type: String!
         category: String!
+        image: String!
         languages: [String]!
         tags: [String]!
         location: EventLocation!
