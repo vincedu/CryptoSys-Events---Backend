@@ -19,13 +19,19 @@
     "node": "^12.18.4"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.3",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.10.0",
-    "nodemon": "^2.0.4"
+    "husky": "^4.3.0",
+    "jest": "^26.5.3",
+    "lint-staged": "^10.4.1",
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2",
+    "pretty-quick": "^3.1.0"
   },
   "scripts": {
     "start": "nodemon src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "lint": "eslint ."
   },
   "_moduleAliases": {
@@ -42,5 +48,16 @@
   "bugs": {
     "url": "https://gitlab.com/polytechnique-montr-al/log89xx/20-3/eos-nation/cryptosys-events-backend/issues"
   },
-  "homepage": "https://gitlab.com/polytechnique-montr-al/log89xx/20-3/eos-nation/cryptosys-events-backend#readme"
+  "homepage": "https://gitlab.com/polytechnique-montr-al/log89xx/20-3/eos-nation/cryptosys-events-backend#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && jest"
+    }
+  },
+  "lint-staged": {
+    "{src,test}/**/*.{js,jsx}": [
+      "eslint",
+      "pretty-quick --staged"
+    ]
+  }
 }

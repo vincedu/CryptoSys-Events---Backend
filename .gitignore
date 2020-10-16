@@ -117,3 +117,6 @@ dist
 
 # vscode workspace settings
 .vscode/
+
+# global config for jest
+globalConfig.json
