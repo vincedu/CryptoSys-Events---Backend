@@ -59,5 +59,10 @@
       "eslint",
       "pretty-quick --staged"
     ]
+  },
+  "config": {
+    "mongodbMemoryServer": {
+      "version": "4.4.1"
+    }
   }
 }
