@@ -31,7 +31,7 @@
   },
   "scripts": {
     "start": "nodemon src/app.js",
-    "test": "jest --debug",
+    "test": "jest",
     "lint": "eslint ."
   },
   "_moduleAliases": {
@@ -59,10 +59,5 @@
       "eslint",
       "pretty-quick --staged"
     ]
-  },
-  "config": {
-    "mongodbMemoryServer": {
-      "version": "3.6.2"
-    }
   }
 }
