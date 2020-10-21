@@ -1,6 +1,7 @@
 const { mergeResolvers } = require("@graphql-tools/merge");
 const { GraphQLDateTime } = require("graphql-iso-date");
 const event = require("./event");
+const ticket = require("./ticket");
 
 const typeDefs = `
     type Query
@@ -11,14 +12,14 @@ const typeDefs = `
 const resolvers = {
     Query: {},
     Mutation: {},
-    DateTime: GraphQLDateTime
+    DateTime: GraphQLDateTime,
 };
 
 const schema = {
-    typeDefs: [typeDefs, event.typeDefs],
-    resolvers: mergeResolvers([resolvers, event.resolvers]),
+    typeDefs: [typeDefs, event.typeDefs, ticket.typeDefs],
+    resolvers: mergeResolvers([resolvers, event.resolvers, ticket.resolvers]),
 };
 
 module.exports = {
-    schema
-}
+    schema,
+};

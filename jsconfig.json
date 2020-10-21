@@ -6,7 +6,8 @@
     "paths": {
       "@config": ["config/config.js"],
       "@db/*": ["src/db/*"],
-      "@utils": ["src/utils/index.js"]
+      "@utils": ["src/utils/index.js"],
+      "@ipfs": ["src/ipfs/index.js"]
     }
   }
 }
