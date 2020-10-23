@@ -15,6 +15,8 @@ AWS_ACCESS_KEY_ID: AWS Access key ID
 AWS_SECRET_ACCESS_KEY: AWS Secret access key
 AWS_S3_REGION: AWS Region in which S3 db is hosted
 AWS_S3_BUCKET: AWS S3 bucket name
+
+GOOGLE_APPLICATION_CREDENTIALS: Google service account key
 ```
 
 ### VSCode specific
