@@ -30,10 +30,12 @@ describe("Event resolver test", () => {
 
     it("should create an event successfully", async () => {
         const event = Events[0];
-        firstEvent = await resolvers.Mutation.createEvent(null, { event });
+        const userId = "asdfqasdfqwfsad";
+        firstEvent = await resolvers.Mutation.createEvent(null, { event }, { userId });
         expect(firstEvent._id).toBeDefined();
         expect(firstEvent.name).toEqual(event.name);
         expect(firstEvent.type).toEqual(event.type);
+        expect(firstEvent.createdBy).toEqual(userId);
         expect(firstEvent.category).toEqual(event.category);
         expect(firstEvent.image).toEqual(mockUrl);
         expect(firstEvent.languages).toEqual(expect.arrayContaining(event.languages));
@@ -45,16 +47,18 @@ describe("Event resolver test", () => {
 
     it("should create event with invalid field successfully, but the field not defined in schema should be undefined", async () => {
         const event = Events[1];
-        const savedEvent = await resolvers.Mutation.createEvent(null, { event });
+        const userId = "asdfqasdfqwfsad";
+        const savedEvent = await resolvers.Mutation.createEvent(null, { event }, userId);
         expect(savedEvent._id).toBeDefined();
         expect(savedEvent.randomField).toBeUndefined();
     });
 
     it("should fail when required field is missing", async () => {
         const event = Events[2];
+        const user = "asdfwafsdfqwefasdf";
         let err;
         try {
-            await resolvers.Mutation.createEvent(null, { event });
+            await resolvers.Mutation.createEvent(null, { event }, { user });
         } catch (error) {
             err = error;
         }

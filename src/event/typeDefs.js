@@ -5,6 +5,7 @@ const typeDefs = gql`
         id: ID!
         createdAt: DateTime!
         updatedAt: DateTime!
+        createdBy: String!
         name: String!
         description: String!
         type: String!

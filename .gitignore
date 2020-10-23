@@ -120,3 +120,6 @@ dist
 
 # global config for jest
 globalConfig.json
+
+# firebase admin sdk private key
+firebase_secret.json

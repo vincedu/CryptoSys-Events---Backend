@@ -20,6 +20,7 @@ const Events = [
         name: "Event 2",
         description: "Description 2",
         type: "type 2",
+        createdBy: "asdfwafsdfqwefasdf",
         category: "category 2",
         imageFile: { createReadStream: "", filename: "", mimetype: "" },
         languages: ["es"],

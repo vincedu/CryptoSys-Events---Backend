@@ -25,16 +25,24 @@ const EventSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        languages: [{
+        languages: [
+            {
+                type: String,
+                default: [],
+                required: true,
+            },
+        ],
+        tags: [
+            {
+                type: String,
+                default: [],
+                required: true,
+            },
+        ],
+        createdBy: {
             type: String,
-            default: [],
             required: true,
-        }],
-        tags: [{
-            type: String,
-            default: [],
-            required: true,
-        }],
+        },
         location: {
             type: {
                 type: String,
@@ -56,7 +64,7 @@ const EventSchema = new mongoose.Schema(
     },
     {
         collection: "events",
-    }
+    },
 );
 
 EventSchema.plugin(timestamps);
@@ -66,5 +74,5 @@ EventSchema.index({ createdAt: 1, updatedAt: 1 });
 const Event = mongoose.model("Event", EventSchema);
 
 module.exports = {
-    Event
-}
+    Event,
+};

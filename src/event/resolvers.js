@@ -19,10 +19,13 @@ const resolvers = {
                 .exec(),
     },
     Mutation: {
-        createEvent: async (_, args) => {
+        createEvent: async (_, args, context) => {
             const { imageFile, ...eventData } = args.event;
             const { createReadStream, filename, mimetype } = await imageFile;
             const { Location } = await uploadFile(createReadStream, filename, mimetype);
+            if (context.userId) {
+                eventData.createdBy = context.userId;
+            }
             eventData.image = Location;
             console.log("Creating event: ", eventData);
             return await Event.create(eventData);
