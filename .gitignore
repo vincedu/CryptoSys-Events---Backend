@@ -122,4 +122,4 @@ dist
 globalConfig.json
 
 # firebase admin sdk private key
-firebase_secret.json
+# firebase_secret.json
