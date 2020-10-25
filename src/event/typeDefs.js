@@ -22,7 +22,7 @@ const typeDefs = gql`
         location: String
     }
 
-    input EventInput { 
+    input EventInput {
         name: String!
         description: String!
         type: String!
@@ -33,7 +33,6 @@ const typeDefs = gql`
         location: EventLocationInput!
         startDate: DateTime!
         endDate: DateTime!
-
     }
 
     input EventLocationInput {
@@ -44,6 +43,16 @@ const typeDefs = gql`
     extend type Query {
         events: [Event]
         eventById(id: String): Event
+        eventsByParam(
+            category: String
+            name: String
+            tags: [String]
+            languages: [String]
+            type: String
+            date: DateTime
+            offset: Int
+            limit: Int
+        ): [Event]
     }
 
     extend type Mutation {
@@ -52,5 +61,5 @@ const typeDefs = gql`
 `;
 
 module.exports = {
-    typeDefs
+    typeDefs,
 };
