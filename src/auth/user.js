@@ -30,6 +30,10 @@ const getUserId = (req) => {
     if (req.headers.authorization.startsWith("Bearer ")) {
         // Get the user token from the headers.
         const token = req.headers.authorization.split("Bearer ")[1];
+        if (!token) {
+            console.log("token is not provided");
+            return;
+        }
         return new Promise((resolve, reject) => {
             admin
                 .auth()
