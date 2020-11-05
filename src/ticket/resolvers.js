@@ -13,6 +13,8 @@ const resolvers = {
         },
         ticketsByAccountName: async (_, args, { dataSources }) =>
             dataSources.atomicAssetsAPI.getTicketsByAccountName(args.accountName),
+        collectionsByAccountName: async (_, args, { dataSources }) =>
+            dataSources.atomicAssetsAPI.getCollectionsByAccountName(args.accountName),
     },
     Mutation: {
         pinTicketImageToIpfs: async (_, args) => {

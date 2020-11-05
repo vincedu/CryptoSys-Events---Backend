@@ -43,6 +43,11 @@ const typeDefs = gql`
         sales: [TicketSale]
     }
 
+    type Collection {
+        collectionName: String!
+        author: String!
+    }
+
     type IpfsResponse {
         ipfsHash: String!
         pinSize: Int!
@@ -58,6 +63,7 @@ const typeDefs = gql`
     extend type Query {
         ticketSalesByEventId(eventId: String!): EventTicketSales
         ticketsByAccountName(accountName: String!): [Ticket]
+        collectionsByAccountName(accountName: String!): [Collection]
     }
 
     extend type Mutation {

@@ -64,6 +64,20 @@ class AtomicAssetsAPI extends RESTDataSource {
         return assetsResponse.data.map((ticketData) => this.ticketReducer(ticketData));
     }
 
+    async getCollectionsByAccountName(accountName) {
+        const response = await this.getAtomicAssets("collections", {
+            author: accountName,
+            match: accountName,
+        });
+
+        if (!response.success || !response.data || !Array.isArray(response.data)) {
+            console.log("ERROR: Unable get collections from AtomicMarket API.");
+            return;
+        }
+
+        return response.data.map((collection) => this.collectionReducer(collection));
+    }
+
     eventTicketSalesReducer(ticketSalesData, templates) {
         const originalTicketSalesTemplateMap = {};
         const resaleticketSalesTemplateMap = {};
@@ -142,6 +156,13 @@ class AtomicAssetsAPI extends RESTDataSource {
             name: ticketTemplateData.immutable_data.name,
             description: ticketTemplateData.immutable_data.description,
             image: ticketTemplateData.immutable_data.img,
+        };
+    }
+
+    collectionReducer(collectionData) {
+        return {
+            collectionName: collectionData.collection_name,
+            author: collectionData.author,
         };
     }
 }
