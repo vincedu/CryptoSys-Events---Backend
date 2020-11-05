@@ -20,10 +20,19 @@ const schema = {
     typeDefs: [typeDefs, event.typeDefs, ticket.typeDefs],
     resolvers: mergeResolvers([resolvers, event.resolvers, ticket.resolvers]),
     context: async ({ req }) => {
-        const userId = await getUserId(req);
-        // add the user to the context
-        return { userId };
+        try {
+            const userId = await getUserId(req);
+
+            // add the user to the context
+            return { userId };
+        } catch (error) {
+            return {};
+        }
     },
+    dataSources: () => ({
+        eventAPI: new event.EventAPI(event.EventModel),
+        atomicAssetsAPI: new ticket.AtomicAssetsAPI(),
+    }),
 };
 
 module.exports = {

@@ -3,6 +3,17 @@ const { v4: uuid } = require("uuid");
 const fs = require("fs");
 
 const resolvers = {
+    Query: {
+        ticketSalesByEventId: async (_, args, { dataSources }) => {
+            const event = await dataSources.eventAPI.getEventById(args.eventId);
+            return dataSources.atomicAssetsAPI.getEventTicketSales(
+                event.nftLink.collectionName,
+                event.nftLink.schemaName,
+            );
+        },
+        ticketsByAccountName: async (_, args, { dataSources }) =>
+            dataSources.atomicAssetsAPI.getTicketsByAccountName(args.accountName),
+    },
     Mutation: {
         pinTicketImageToIpfs: async (_, args) => {
             const { file, eventName, ticketName } = args.ticketImage;

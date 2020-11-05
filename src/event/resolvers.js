@@ -1,35 +1,13 @@
-const { Event } = require("./model");
-const { uploadFile } = require("@utils");
-
 const resolvers = {
     Query: {
-        events: async () => await Event.find({}).exec(),
-        eventById: async (_, args) => await Event.findById(args.id).exec(),
-        eventsByParam: async (_, args) =>
-            await Event.find({
-                ...(args.category && { category: args.category }),
-                ...(args.type && { type: args.type }),
-                ...(args.languages && { languages: { $in: args.languages } }),
-                ...(args.tags && { tags: { $in: args.tags } }),
-                ...(args.date && { startDate: new Date(args.date) }),
-                ...(args.name && { name: args.name }),
-            })
-                .skip(args.offset)
-                .limit(args.limit)
-                .exec(),
+        events: async (_, __, { dataSources }) => dataSources.eventAPI.getEvents(),
+        eventById: async (_, args, { dataSources }) => dataSources.eventAPI.getEventById(args.id),
+        eventsByParam: async (_, args, { dataSources }) => dataSources.eventAPI.getEventsByParam(args),
     },
     Mutation: {
-        createEvent: async (_, args, context) => {
-            const { imageFile, ...eventData } = args.event;
-            const { createReadStream, filename, mimetype } = await imageFile;
-            const { Location } = await uploadFile(createReadStream, filename, mimetype);
-            if (context.userId) {
-                eventData.createdBy = context.userId;
-            }
-            eventData.image = Location;
-            console.log("Creating event: ", eventData);
-            return await Event.create(eventData);
-        },
+        createEvent: async (_, args, { dataSources }) => dataSources.eventAPI.createEvent(args.event),
+        linkNftToEvent: async (_, { eventId, collectionName, schemaName }, { dataSources }) =>
+            dataSources.eventAPI.linkNftToEvent(eventId, collectionName, schemaName),
     },
 };
 

@@ -61,6 +61,16 @@ const EventSchema = new mongoose.Schema(
             type: Date,
             require: true,
         },
+        nftLink: {
+            collectionName: {
+                type: String,
+                required: false,
+            },
+            schemaName: {
+                type: String,
+                required: false,
+            },
+        },
     },
     {
         collection: "events",
@@ -71,8 +81,8 @@ EventSchema.plugin(timestamps);
 
 EventSchema.index({ createdAt: 1, updatedAt: 1 });
 
-const Event = mongoose.model("Event", EventSchema);
+const EventModel = mongoose.model("Event", EventSchema);
 
 module.exports = {
-    Event,
+    EventModel,
 };

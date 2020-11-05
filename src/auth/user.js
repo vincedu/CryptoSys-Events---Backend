@@ -1,10 +1,10 @@
 const admin = require("firebase-admin");
 
 const getUser = (req) => {
-    if (req.headers.authorization.startsWith("Bearer ")) {
-        // Get the user token from the headers.
-        const token = req.headers.authorization.split("Bearer ")[1];
-        return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
+        if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+            // Get the user token from the headers.
+            const token = req.headers.authorization.split("Bearer ")[1];
             admin
                 .auth()
                 .verifyIdToken(token)
@@ -22,19 +22,22 @@ const getUser = (req) => {
                 .catch(function (error) {
                     reject(error);
                 });
-        });
-    }
+        } else {
+            reject();
+        }
+    });
 };
 
 const getUserId = (req) => {
-    if (req.headers.authorization.startsWith("Bearer ")) {
-        // Get the user token from the headers.
-        const token = req.headers.authorization.split("Bearer ")[1];
-        if (!token) {
-            console.log("token is not provided");
-            return;
-        }
-        return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
+        if (req.headers.authorization && req.headers.authorization.startsWith("Bearer ")) {
+            // Get the user token from the headers.
+            const token = req.headers.authorization.split("Bearer ")[1];
+            if (!token) {
+                console.log("token is not provided");
+                return;
+            }
+
             admin
                 .auth()
                 .verifyIdToken(token)
@@ -44,8 +47,10 @@ const getUserId = (req) => {
                 .catch(function (error) {
                     reject(error);
                 });
-        });
-    }
+        } else {
+            reject();
+        }
+    });
 };
 
 module.exports = {

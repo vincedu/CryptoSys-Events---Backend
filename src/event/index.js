@@ -1,9 +1,11 @@
-const { Event } = require("./model");
+const { EventAPI } = require("./eventAPI");
+const { EventModel } = require("./eventModel");
 const { resolvers } = require("./resolvers");
 const { typeDefs } = require("./typeDefs");
 
 module.exports = {
-    Event,
+    EventAPI,
+    EventModel,
     resolvers,
     typeDefs,
 };

@@ -5,16 +5,24 @@ const dependency = require("../../src/utils");
 describe("Event resolver test", () => {
     const mockUrl = "mockUrl";
     let resolvers;
+    let dataSources;
     let firstEvent;
+    const MOCK_USER_ID = "userId";
 
     beforeAll(async () => {
         dependency.uploadFile = jest.fn(() => {
             return { Location: mockUrl };
         });
         resolvers = require("../../src/event/resolvers").resolvers;
+
         await mongoose.connect(
             global.__MONGO_URI__,
-            { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true },
+            {
+                useNewUrlParser: true,
+                useCreateIndex: true,
+                useUnifiedTopology: true,
+                useFindAndModify: false,
+            },
             (err) => {
                 if (err) {
                     console.error(err);
@@ -22,6 +30,14 @@ describe("Event resolver test", () => {
                 }
             },
         );
+
+        const { EventAPI } = require("../../src/event/eventAPI");
+        const { EventModel } = require("../../src/event/eventModel");
+
+        dataSources = {
+            eventAPI: new EventAPI(EventModel),
+        };
+        dataSources.eventAPI.context = { userId: MOCK_USER_ID };
     });
 
     afterAll(async () => {
@@ -30,8 +46,8 @@ describe("Event resolver test", () => {
 
     it("should create an event successfully", async () => {
         const event = Events[0];
-        const userId = "asdfqasdfqwfsad";
-        firstEvent = await resolvers.Mutation.createEvent(null, { event }, { userId });
+        const userId = MOCK_USER_ID;
+        firstEvent = await resolvers.Mutation.createEvent(null, { event }, { userId, dataSources });
         expect(firstEvent._id).toBeDefined();
         expect(firstEvent.name).toEqual(event.name);
         expect(firstEvent.type).toEqual(event.type);
@@ -47,18 +63,18 @@ describe("Event resolver test", () => {
 
     it("should create event with invalid field successfully, but the field not defined in schema should be undefined", async () => {
         const event = Events[1];
-        const userId = "asdfqasdfqwfsad";
-        const savedEvent = await resolvers.Mutation.createEvent(null, { event }, userId);
+        const userId = MOCK_USER_ID;
+        const savedEvent = await resolvers.Mutation.createEvent(null, { event }, { userId, dataSources });
         expect(savedEvent._id).toBeDefined();
         expect(savedEvent.randomField).toBeUndefined();
     });
 
     it("should fail when required field is missing", async () => {
         const event = Events[2];
-        const user = "asdfwafsdfqwefasdf";
+        const userId = MOCK_USER_ID;
         let err;
         try {
-            await resolvers.Mutation.createEvent(null, { event }, { user });
+            await resolvers.Mutation.createEvent(null, { event }, { userId, dataSources });
         } catch (error) {
             err = error;
         }
@@ -68,9 +84,10 @@ describe("Event resolver test", () => {
 
     it("should fail when image file is missing", async () => {
         const event = Events[3];
+        const userId = MOCK_USER_ID;
         let err;
         try {
-            await resolvers.Mutation.createEvent(null, { event });
+            await resolvers.Mutation.createEvent(null, { event }, { userId, dataSources });
         } catch (error) {
             err = error;
         }
@@ -78,12 +95,12 @@ describe("Event resolver test", () => {
     });
 
     it("should fetch all events", async () => {
-        const events = await resolvers.Query.events();
+        const events = await resolvers.Query.events(null, null, { dataSources });
         expect(events.length).toBe(2);
     });
 
     it("should fetch an event by id", async () => {
-        const requestedEvent = await resolvers.Query.eventById(null, { id: firstEvent._id });
+        const requestedEvent = await resolvers.Query.eventById(null, { id: firstEvent._id }, { dataSources });
         expect(requestedEvent._id).toEqual(firstEvent._id);
         expect(requestedEvent.name).toEqual(firstEvent.name);
         expect(requestedEvent.type).toEqual(firstEvent.type);
