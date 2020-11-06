@@ -6,13 +6,35 @@ const resolvers = {
     Query: {
         ticketSalesByEventId: async (_, args, { dataSources }) => {
             const event = await dataSources.eventAPI.getEventById(args.eventId);
-            return dataSources.atomicAssetsAPI.getEventTicketSales(
-                event.nftLink.collectionName,
-                event.nftLink.schemaName,
-            );
+            return dataSources.atomicAssetsAPI.getEventTicketSalesByTemplateIds(event.nftTemplates);
         },
-        ticketsByAccountName: async (_, args, { dataSources }) =>
-            dataSources.atomicAssetsAPI.getTicketsByAccountName(args.accountName),
+        ticketsForEventsByAccountName: async (_, args, { dataSources }) => {
+            const ticketsByEvent = await dataSources.atomicAssetsAPI.getEventTicketsByAccountName(args.accountName);
+
+            const sortedEventTickets = {
+                upcoming: [],
+                past: [],
+            };
+
+            await Promise.all(
+                ticketsByEvent.map(async (ticketsForEvent) => {
+                    const ticketForEventWithEventData = {
+                        event: await dataSources.eventAPI.getEventById(ticketsForEvent.eventId),
+                        tickets: ticketsForEvent.tickets,
+                    };
+
+                    if (Date.now() < ticketForEventWithEventData.event.endDate) {
+                        sortedEventTickets.upcoming.push(ticketForEventWithEventData);
+                    } else {
+                        sortedEventTickets.past.push(ticketForEventWithEventData);
+                    }
+                }),
+            );
+
+            return sortedEventTickets;
+        },
+        ticketByAssetId: async (_, args, { dataSources }) =>
+            dataSources.atomicAssetsAPI.getTicketByAssetId(args.assetId),
         collectionsByAccountName: async (_, args, { dataSources }) =>
             dataSources.atomicAssetsAPI.getCollectionsByAccountName(args.accountName),
     },

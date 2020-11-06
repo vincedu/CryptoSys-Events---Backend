@@ -37,9 +37,9 @@ class EventAPI extends MongoDataSource {
         return await this.model.create(eventData);
     }
 
-    async linkNftToEvent(eventId, collectionName, schemaName) {
+    async linkNftTemplatesToEvent(eventId, templateIds) {
         return this.model
-            .findOneAndUpdate({ _id: eventId }, { $set: { nftLink: { collectionName, schemaName } } }, { new: true })
+            .findOneAndUpdate({ _id: eventId }, { $set: { nftTemplates: templateIds } }, { new: true })
             .exec();
     }
 }

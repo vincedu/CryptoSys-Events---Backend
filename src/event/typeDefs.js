@@ -16,12 +16,7 @@ const typeDefs = gql`
         location: EventLocation!
         startDate: DateTime!
         endDate: DateTime!
-        nftLink: NFTLink
-    }
-
-    type NFTLink {
-        collectionName: String
-        schemaName: String
+        nftTemplates: [String]
     }
 
     type EventLocation {
@@ -64,7 +59,7 @@ const typeDefs = gql`
 
     extend type Mutation {
         createEvent(event: EventInput): Event
-        linkNftToEvent(eventId: String!, collectionName: String!, schemaName: String!): Event
+        linkNftTemplatesToEvent(eventId: String!, templateIds: [String]!): Event
     }
 `;
 

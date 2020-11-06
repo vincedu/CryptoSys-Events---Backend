@@ -3,6 +3,7 @@ const { gql } = require("apollo-server-express");
 const typeDefs = gql`
     type Ticket {
         templateId: String!
+        templateMint: Int!
         assetId: String!
         owner: String!
         eventId: String
@@ -33,14 +34,29 @@ const typeDefs = gql`
         currency: String!
     }
 
-    type EventTicketSales {
-        original: [EventTicketSalesByTemplate]!
-        resale: [EventTicketSalesByTemplate]!
+    type TicketSalesByTemplate {
+        template: TicketTemplate!
+        sales: [TicketSale]!
     }
 
-    type EventTicketSalesByTemplate {
+    type TicketSales {
+        original: [TicketSalesByTemplate]!
+        resale: [TicketSalesByTemplate]!
+    }
+
+    type EventTicketsByTemplate {
         template: TicketTemplate!
-        sales: [TicketSale]
+        tickets: [Ticket]
+    }
+
+    type EventTicket {
+        event: Event!
+        tickets: [EventTicketsByTemplate]!
+    }
+
+    type EventTickets {
+        upcoming: [EventTicket]
+        past: [EventTicket]
     }
 
     type Collection {
@@ -61,8 +77,9 @@ const typeDefs = gql`
     }
 
     extend type Query {
-        ticketSalesByEventId(eventId: String!): EventTicketSales
-        ticketsByAccountName(accountName: String!): [Ticket]
+        ticketSalesByEventId(eventId: String!): TicketSales
+        ticketsForEventsByAccountName(accountName: String!): EventTickets
+        ticketByAssetId(assetId: String!): Ticket
         collectionsByAccountName(accountName: String!): [Collection]
     }
 

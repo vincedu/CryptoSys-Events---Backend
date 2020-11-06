@@ -61,16 +61,13 @@ const EventSchema = new mongoose.Schema(
             type: Date,
             require: true,
         },
-        nftLink: {
-            collectionName: {
+        nftTemplates: [
+            {
                 type: String,
+                default: [],
                 required: false,
             },
-            schemaName: {
-                type: String,
-                required: false,
-            },
-        },
+        ],
     },
     {
         collection: "events",
