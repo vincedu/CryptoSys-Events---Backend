@@ -20,6 +20,13 @@ class AtomicAssetsAPI extends RESTDataSource {
     }
 
     async getEventTicketSalesByTemplateIds(templateIds) {
+        if (!templateIds || templateIds.length === 0) {
+            return {
+                original: [],
+                resale: [],
+            };
+        }
+
         const templateResponse = await this.getAtomicAssets("templates", {
             ids: templateIds.join(","),
         });
