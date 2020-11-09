@@ -22,11 +22,12 @@ const resolvers = {
                         event: await dataSources.eventAPI.getEventById(ticketsForEvent.eventId),
                         tickets: ticketsForEvent.tickets,
                     };
-
-                    if (Date.now() < ticketForEventWithEventData.event.endDate) {
-                        sortedEventTickets.upcoming.push(ticketForEventWithEventData);
-                    } else {
-                        sortedEventTickets.past.push(ticketForEventWithEventData);
+                    if (ticketForEventWithEventData.event) {
+                        if (Date.now() < ticketForEventWithEventData.event.endDate) {
+                            sortedEventTickets.upcoming.push(ticketForEventWithEventData);
+                        } else {
+                            sortedEventTickets.past.push(ticketForEventWithEventData);
+                        }
                     }
                 }),
             );
