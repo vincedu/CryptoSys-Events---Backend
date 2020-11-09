@@ -11,6 +11,7 @@ const resolvers = {
         ticketsForEventsByAccountName: async (_, args, { dataSources }) => {
             const ticketsByEvent = await dataSources.atomicAssetsAPI.getEventTicketsByAccountName(args.accountName);
 
+            console.log("TICKETS:", ticketsByEvent);
             const sortedEventTickets = {
                 upcoming: [],
                 past: [],
@@ -18,15 +19,17 @@ const resolvers = {
 
             await Promise.all(
                 ticketsByEvent.map(async (ticketsForEvent) => {
-                    const ticketForEventWithEventData = {
-                        event: await dataSources.eventAPI.getEventById(ticketsForEvent.eventId),
-                        tickets: ticketsForEvent.tickets,
-                    };
-                    if (ticketForEventWithEventData.event) {
-                        if (Date.now() < ticketForEventWithEventData.event.endDate) {
-                            sortedEventTickets.upcoming.push(ticketForEventWithEventData);
-                        } else {
-                            sortedEventTickets.past.push(ticketForEventWithEventData);
+                    if (ticketsForEvent.eventId.match(/^[0-9a-fA-F]{24}$/)) {
+                        const ticketForEventWithEventData = {
+                            event: await dataSources.eventAPI.getEventById(ticketsForEvent.eventId),
+                            tickets: ticketsForEvent.tickets,
+                        };
+                        if (ticketForEventWithEventData.event) {
+                            if (Date.now() < ticketForEventWithEventData.event.endDate) {
+                                sortedEventTickets.upcoming.push(ticketForEventWithEventData);
+                            } else {
+                                sortedEventTickets.past.push(ticketForEventWithEventData);
+                            }
                         }
                     }
                 }),
