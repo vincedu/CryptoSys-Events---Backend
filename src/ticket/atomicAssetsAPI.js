@@ -1,6 +1,7 @@
 const { RESTDataSource } = require("apollo-datasource-rest");
 
-const DEFAULT_MARKETPLACE = "testmarket11";
+const DEFAULT_MARKETPLACE = "testmarket11"; // TODO: Change marketplace name
+const TICKET_SCHEMA_NAME = "ticket"; // TODO: Change schema name
 
 class AtomicAssetsAPI extends RESTDataSource {
     constructor() {
@@ -65,7 +66,7 @@ class AtomicAssetsAPI extends RESTDataSource {
     async getEventTicketsByAccountName(accountName) {
         let assetsResponse = await this.getAtomicAssets("assets", {
             owner: accountName,
-            schema_name: "ticket", // TODO: Change depending on constant schema used in frontend
+            schema_name: TICKET_SCHEMA_NAME,
             order: "desc",
             sort: "updated",
         });
@@ -261,7 +262,7 @@ class AtomicAssetsAPI extends RESTDataSource {
     }
 
     isValidAssetSchema(schemaData) {
-        return schemaData.schema_name === "ticket";
+        return schemaData.schema_name === TICKET_SCHEMA_NAME;
     }
 
     isValidAssetTemplate(templateData) {
