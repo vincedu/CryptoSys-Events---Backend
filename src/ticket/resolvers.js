@@ -40,16 +40,22 @@ const resolvers = {
             return ticketsByEvent;
         },
         ticketsForEventsByAccountName: async (_, args, { dataSources }) => {
-            const ticketsByEvent = await dataSources.atomicAssetsAPI.getEventTicketsByAccountName(args.accountName);
+            const {
+                myTicketsByEvent,
+                sellTicketsByEvent,
+            } = await dataSources.atomicAssetsAPI.getEventTicketsByAccountName(args.accountName);
 
-            console.log("TICKETS:", ticketsByEvent);
-            const sortedEventTickets = {
+            const myTickets = {
+                upcoming: [],
+                past: [],
+            };
+            const sellTickets = {
                 upcoming: [],
                 past: [],
             };
 
             await Promise.all(
-                ticketsByEvent.map(async (ticketsForEvent) => {
+                myTicketsByEvent.map(async (ticketsForEvent) => {
                     if (ticketsForEvent.eventId.match(/^[0-9a-fA-F]{24}$/)) {
                         const ticketForEventWithEventData = {
                             event: await dataSources.eventAPI.getEventById(ticketsForEvent.eventId),
@@ -57,16 +63,33 @@ const resolvers = {
                         };
                         if (ticketForEventWithEventData.event) {
                             if (Date.now() < ticketForEventWithEventData.event.endDate) {
-                                sortedEventTickets.upcoming.push(ticketForEventWithEventData);
+                                myTickets.upcoming.push(ticketForEventWithEventData);
                             } else {
-                                sortedEventTickets.past.push(ticketForEventWithEventData);
+                                myTickets.past.push(ticketForEventWithEventData);
+                            }
+                        }
+                    }
+                }),
+            );
+            await Promise.all(
+                sellTicketsByEvent.map(async (ticketsForEvent) => {
+                    if (ticketsForEvent.eventId.match(/^[0-9a-fA-F]{24}$/)) {
+                        const ticketForEventWithEventData = {
+                            event: await dataSources.eventAPI.getEventById(ticketsForEvent.eventId),
+                            tickets: ticketsForEvent.tickets,
+                        };
+                        if (ticketForEventWithEventData.event) {
+                            if (Date.now() < ticketForEventWithEventData.event.endDate) {
+                                sellTickets.upcoming.push(ticketForEventWithEventData);
+                            } else {
+                                sellTickets.past.push(ticketForEventWithEventData);
                             }
                         }
                     }
                 }),
             );
 
-            return sortedEventTickets;
+            return { myTickets, sellTickets };
         },
         ticketByAssetId: async (_, args, { dataSources }) =>
             dataSources.atomicAssetsAPI.getTicketByAssetId(args.assetId),
