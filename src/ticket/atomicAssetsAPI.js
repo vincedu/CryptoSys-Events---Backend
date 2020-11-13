@@ -63,7 +63,7 @@ class AtomicAssetsAPI extends RESTDataSource {
     }
 
     async getEventTicketsByAccountName(accountName) {
-        const assetsResponse = await this.getAtomicAssets("assets", {
+        let assetsResponse = await this.getAtomicAssets("assets", {
             owner: accountName,
             schema_name: "ticket", // TODO: Change depending on constant schema used in frontend
             order: "desc",
@@ -74,7 +74,25 @@ class AtomicAssetsAPI extends RESTDataSource {
             console.log("ERROR: Unable get assets from AtomicMarket API.");
             return;
         }
+        await Promise.all(
+            assetsResponse.data.map(async (ticketData) => {
+                const salesResponse = await this.getAtomicMarket("sales", {
+                    state: 1, // 1: LISTED SALE
+                    marketplace: DEFAULT_MARKETPLACE,
+                    asset_id: ticketData.asset_id,
+                    order: "asc",
+                    sort: "price",
+                });
 
+                if (!salesResponse.success || !salesResponse.data || !Array.isArray(salesResponse.data)) {
+                    console.log("ERROR: Unable get sales from AtomicMarket API.");
+                } else if (salesResponse.data.length > 0) {
+                    ticketData.sale = salesResponse.data[0];
+                }
+            }),
+        );
+
+        // console.log("NEW ASSETS RESPONSE:", assetsResponse.data[0]);
         return this.ticketsByEventReducer(assetsResponse.data);
     }
 
@@ -165,6 +183,7 @@ class AtomicAssetsAPI extends RESTDataSource {
             name: ticketData.data.name,
             description: ticketData.data.description,
             image: ticketData.data.img,
+            sale: ticketData.sale,
         };
     }
 
@@ -180,32 +199,55 @@ class AtomicAssetsAPI extends RESTDataSource {
     }
 
     ticketsByEventReducer(ticketsData) {
-        const eventTicketsMap = {};
+        const myEventTicketsMap = {};
+        const sellEventTicketsMap = {};
         ticketsData.forEach((ticketData) => {
             if (this.isValidTicketAsset(ticketData)) {
-                const eventId = ticketData.data.eventId;
+                if (ticketData.sale) {
+                    const eventId = ticketData.data.eventId;
 
-                if (!eventTicketsMap[eventId]) {
-                    eventTicketsMap[eventId] = {};
+                    if (!sellEventTicketsMap[eventId]) {
+                        sellEventTicketsMap[eventId] = {};
+                    }
+
+                    const templateId = ticketData.template.template_id;
+
+                    if (!sellEventTicketsMap[eventId][templateId]) {
+                        sellEventTicketsMap[eventId][templateId] = {
+                            template: this.ticketTemplateReducer(ticketData.template),
+                            tickets: [],
+                        };
+                    }
+                    sellEventTicketsMap[eventId][templateId].tickets.push(this.ticketReducer(ticketData));
+                } else {
+                    const eventId = ticketData.data.eventId;
+
+                    if (!myEventTicketsMap[eventId]) {
+                        myEventTicketsMap[eventId] = {};
+                    }
+
+                    const templateId = ticketData.template.template_id;
+
+                    if (!myEventTicketsMap[eventId][templateId]) {
+                        myEventTicketsMap[eventId][templateId] = {
+                            template: this.ticketTemplateReducer(ticketData.template),
+                            tickets: [],
+                        };
+                    }
+                    myEventTicketsMap[eventId][templateId].tickets.push(this.ticketReducer(ticketData));
                 }
-
-                const templateId = ticketData.template.template_id;
-
-                if (!eventTicketsMap[eventId][templateId]) {
-                    eventTicketsMap[eventId][templateId] = {
-                        template: this.ticketTemplateReducer(ticketData.template),
-                        tickets: [],
-                    };
-                }
-
-                eventTicketsMap[eventId][templateId].tickets.push(this.ticketReducer(ticketData));
             }
         });
-
-        return Object.keys(eventTicketsMap).map((eventId) => ({
-            eventId,
-            tickets: Object.values(eventTicketsMap[eventId]),
-        }));
+        return {
+            myTicketsByEvent: Object.keys(myEventTicketsMap).map((eventId) => ({
+                eventId,
+                tickets: Object.values(myEventTicketsMap[eventId]),
+            })),
+            sellTicketsByEvent: Object.keys(sellEventTicketsMap).map((eventId) => ({
+                eventId,
+                tickets: Object.values(sellEventTicketsMap[eventId]),
+            })),
+        };
     }
 
     collectionReducer(collectionData) {

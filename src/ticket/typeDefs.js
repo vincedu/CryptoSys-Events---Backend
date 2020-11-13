@@ -54,9 +54,14 @@ const typeDefs = gql`
         tickets: [EventTicketsByTemplate]!
     }
 
-    type EventTickets {
+    type EventTicketGroup {
         upcoming: [EventTicket]
         past: [EventTicket]
+    }
+
+    type EventTickets {
+        myTickets: EventTicketGroup
+        sellTickets: EventTicketGroup
     }
 
     type Collection {
