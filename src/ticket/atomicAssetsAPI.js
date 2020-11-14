@@ -87,7 +87,7 @@ class AtomicAssetsAPI extends RESTDataSource {
                 if (!salesResponse.success || !salesResponse.data || !Array.isArray(salesResponse.data)) {
                     console.log("ERROR: Unable get sales from AtomicMarket API.");
                 } else if (salesResponse.data.length > 0) {
-                    ticketData.sale = salesResponse.data[0];
+                    ticketData.sale = this.ticketSaleReducer(salesResponse.data[0]);
                 }
             }),
         );

@@ -18,10 +18,7 @@ const resolvers = {
                 upcoming: [],
                 past: [],
             };
-            const sellTickets = {
-                upcoming: [],
-                past: [],
-            };
+            const sellTickets = [];
 
             await Promise.all(
                 myTicketsByEvent.map(async (ticketsForEvent) => {
@@ -48,11 +45,7 @@ const resolvers = {
                             tickets: ticketsForEvent.tickets,
                         };
                         if (ticketForEventWithEventData.event) {
-                            if (Date.now() < ticketForEventWithEventData.event.endDate) {
-                                sellTickets.upcoming.push(ticketForEventWithEventData);
-                            } else {
-                                sellTickets.past.push(ticketForEventWithEventData);
-                            }
+                            sellTickets.push(ticketForEventWithEventData);
                         }
                     }
                 }),
