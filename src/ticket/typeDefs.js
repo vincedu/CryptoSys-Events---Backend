@@ -10,6 +10,7 @@ const typeDefs = gql`
         name: String
         description: String
         image: String
+        sale: TicketSale
     }
 
     type TicketTemplate {
@@ -61,7 +62,7 @@ const typeDefs = gql`
 
     type EventTickets {
         myTickets: EventTicketGroup
-        sellTickets: EventTicketGroup
+        sellTickets: [EventTicket]
     }
 
     type Collection {
