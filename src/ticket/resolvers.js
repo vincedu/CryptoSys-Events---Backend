@@ -88,6 +88,11 @@ const resolvers = {
             dataSources.atomicAssetsAPI.getTicketByAssetId(args.assetId),
         collectionsByAccountName: async (_, args, { dataSources }) =>
             dataSources.atomicAssetsAPI.getCollectionsByAccountName(args.accountName),
+        ticketSchemasByAccountNameAndCollectionName: async (_, args, { dataSources }) =>
+            dataSources.atomicAssetsAPI.getTicketSchemasByAccountNameAndCollectionName(
+                args.accountName,
+                args.collectionName,
+            ),
     },
     Mutation: {
         pinTicketImageToIpfs: async (_, args) => {

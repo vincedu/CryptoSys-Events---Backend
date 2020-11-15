@@ -1,7 +1,7 @@
 const { RESTDataSource } = require("apollo-datasource-rest");
 
 const DEFAULT_MARKETPLACE = "testmarket11"; // TODO: Change marketplace name
-const TICKET_SCHEMA_NAME = "ticket"; // TODO: Change schema name
+const TICKET_SCHEMA_NAME = "eosticket.v1";
 
 class AtomicAssetsAPI extends RESTDataSource {
     constructor() {
@@ -126,6 +126,21 @@ class AtomicAssetsAPI extends RESTDataSource {
         return response.data.map((collection) => this.collectionReducer(collection));
     }
 
+    async getTicketSchemasByAccountNameAndCollectionName(accountName, collectionName) {
+        const response = await this.getAtomicAssets("schemas", {
+            authorized_account: accountName,
+            collection_name: collectionName,
+            schema_name: TICKET_SCHEMA_NAME,
+        });
+
+        if (!response.success || !response.data || !Array.isArray(response.data)) {
+            console.log("ERROR: Unable get schemas from AtomicMarket API.");
+            return;
+        }
+
+        return response.data.map((schema) => this.schemaReducer(schema));
+    }
+
     eventTicketSalesReducer(ticketSalesData, templates) {
         const originalTicketSalesTemplateMap = {};
         const resaleticketSalesTemplateMap = {};
@@ -184,6 +199,8 @@ class AtomicAssetsAPI extends RESTDataSource {
             description: ticketData.data.description,
             image: ticketData.data.img,
             sale: ticketData.sale,
+            opened: ticketData.data.opened,
+            used: ticketData.data.used,
         };
     }
 
@@ -254,6 +271,12 @@ class AtomicAssetsAPI extends RESTDataSource {
         return {
             collectionName: collectionData.collection_name,
             author: collectionData.author,
+        };
+    }
+
+    schemaReducer(schemaData) {
+        return {
+            schemaName: schemaData.schema_name,
         };
     }
 
