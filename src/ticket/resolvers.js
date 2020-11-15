@@ -4,9 +4,40 @@ const fs = require("fs");
 
 const resolvers = {
     Query: {
-        ticketSalesByEventId: async (_, args, { dataSources }) => {
-            const event = await dataSources.eventAPI.getEventById(args.eventId);
-            return dataSources.atomicAssetsAPI.getEventTicketSalesByTemplateIds(event.nftTemplates);
+        ticketsSalesByAccountName: async (_, args, { dataSources }) => {
+            let myEventsIds = [];
+            const events = await dataSources.eventAPI.getEventsByCreator(args.createdBy);
+            // if (events.data !== undefined){
+            events.forEach((event) => {
+                myEventsIds.push(event.id);
+            });
+            // }
+            //
+            var ticketsByEvent = [];
+            for (const eventId of myEventsIds) {
+                const event = await dataSources.eventAPI.getEventById(eventId);
+                const eventTickets = await dataSources.atomicAssetsAPI.getEventTicketSalesByTemplateIds(
+                    event.nftTemplates,
+                );
+                ticketsByEvent.push(eventTickets);
+            }
+            //
+            for (let i = 0; i < events.length; i++) {
+                events[i].tickets = ticketsByEvent[i];
+            }
+            return events;
+        },
+
+        ticketSalesByEventIds: async (_, args, { dataSources }) => {
+            var ticketsByEvent = [];
+            for (const eventId of args.eventIds) {
+                const event = await dataSources.eventAPI.getEventById(eventId);
+                const eventTickets = await dataSources.atomicAssetsAPI.getEventTicketSalesByTemplateIds(
+                    event.nftTemplates,
+                );
+                ticketsByEvent.push(eventTickets);
+            }
+            return ticketsByEvent;
         },
         ticketsForEventsByAccountName: async (_, args, { dataSources }) => {
             const ticketsByEvent = await dataSources.atomicAssetsAPI.getEventTicketsByAccountName(args.accountName);

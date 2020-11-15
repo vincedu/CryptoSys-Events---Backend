@@ -55,6 +55,7 @@ const typeDefs = gql`
             offset: Int
             limit: Int
         ): [Event]
+        eventsByCreator(createdBy: String): [Event]
     }
 
     extend type Mutation {
