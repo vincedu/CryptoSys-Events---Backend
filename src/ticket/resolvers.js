@@ -6,7 +6,7 @@ const resolvers = {
     Query: {
         ticketsSalesByAccountName: async (_, args, { dataSources }) => {
             let myEventsIds = [];
-            const events = await dataSources.eventAPI.getEventsByCreator(args.createdBy);
+            const events = await dataSources.eventAPI.getEventsByCreator(dataSources.eventAPI.context.userId);
             // if (events.data !== undefined){
             events.forEach((event) => {
                 myEventsIds.push(event.id);
