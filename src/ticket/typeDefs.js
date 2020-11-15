@@ -11,6 +11,8 @@ const typeDefs = gql`
         description: String
         image: String
         sale: TicketSale
+        opened: Boolean
+        used: Boolean
     }
 
     type TicketTemplate {
@@ -70,6 +72,10 @@ const typeDefs = gql`
         author: String!
     }
 
+    type Schema {
+        schemaName: String!
+    }
+
     type IpfsResponse {
         ipfsHash: String!
         pinSize: Int!
@@ -106,7 +112,11 @@ const typeDefs = gql`
         ticketsForEventsByAccountName(accountName: String!): EventTickets
         ticketByAssetId(assetId: String!): Ticket
         collectionsByAccountName(accountName: String!): [Collection]
+<<<<<<< HEAD
         ticketsSalesByAccountName(createdBy: String!): [EventWithTicketsSales]
+=======
+        ticketSchemasByAccountNameAndCollectionName(accountName: String!, collectionName: String!): [Schema]
+>>>>>>> fbfc9e0... Implement ticket opening and fix bugs
     }
 
     extend type Mutation {
