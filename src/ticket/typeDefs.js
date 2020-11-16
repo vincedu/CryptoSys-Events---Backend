@@ -76,6 +76,25 @@ const typeDefs = gql`
         timestamp: DateTime!
     }
 
+    type EventWithTicketsSales {
+        id: ID!
+        createdAt: DateTime!
+        updatedAt: DateTime!
+        createdBy: String!
+        name: String!
+        description: String!
+        type: String!
+        category: String!
+        image: String
+        languages: [String]!
+        tags: [String]!
+        location: EventLocation!
+        startDate: DateTime!
+        endDate: DateTime!
+        nftTemplates: [String]
+        tickets: TicketSales
+    }
+
     input TicketImageInput {
         file: Upload!
         ticketName: String!
@@ -83,10 +102,11 @@ const typeDefs = gql`
     }
 
     extend type Query {
-        ticketSalesByEventId(eventId: String!): TicketSales
+        ticketSalesByEventIds(eventIds: [String!]): [TicketSales]
         ticketsForEventsByAccountName(accountName: String!): EventTickets
         ticketByAssetId(assetId: String!): Ticket
         collectionsByAccountName(accountName: String!): [Collection]
+        ticketsSalesByAccountName(createdBy: String!): [EventWithTicketsSales]
     }
 
     extend type Mutation {

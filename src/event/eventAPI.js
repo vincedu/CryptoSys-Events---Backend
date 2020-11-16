@@ -10,6 +10,10 @@ class EventAPI extends MongoDataSource {
         return this.model.findById(eventId).exec();
     }
 
+    async getEventsByCreator(createdBy) {
+        return this.model.find({ ...(createdBy && { createdBy: createdBy }) }).exec();
+    }
+
     async getEventsByParam(args) {
         return this.model
             .find({
