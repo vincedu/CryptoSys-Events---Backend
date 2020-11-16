@@ -92,7 +92,6 @@ class AtomicAssetsAPI extends RESTDataSource {
             }),
         );
 
-        // console.log("NEW ASSETS RESPONSE:", assetsResponse.data[0]);
         return this.ticketsByEventReducer(assetsResponse.data);
     }
 
