@@ -20,7 +20,7 @@ class AtomicAssetsAPI extends RESTDataSource {
         return this.get(`atomicmarket/v1/${path}`, params, init);
     }
 
-    async getEventTicketSalesByTemplateIds(templateIds) {
+    async getEventTicketSalesByTemplateIds(templateIds, typeOfSales) {
         if (!templateIds || templateIds.length === 0) {
             return {
                 original: [],
@@ -44,7 +44,7 @@ class AtomicAssetsAPI extends RESTDataSource {
         await Promise.all(
             templates.map(async (template) => {
                 const salesResponse = await this.getAtomicMarket("sales", {
-                    state: 1, // 1: LISTED SALE
+                    state: typeOfSales, // 1: LISTED SALE
                     marketplace: DEFAULT_MARKETPLACE,
                     template_id: template.templateId,
                     order: "asc",

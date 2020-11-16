@@ -98,7 +98,8 @@ const typeDefs = gql`
         startDate: DateTime!
         endDate: DateTime!
         nftTemplates: [String]
-        tickets: TicketSales
+        ticketsListedSale: TicketSales
+        ticketsSoldSale: TicketSales
     }
 
     input TicketImageInput {

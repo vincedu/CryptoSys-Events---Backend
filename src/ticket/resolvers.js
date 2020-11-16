@@ -2,28 +2,35 @@ const { pinata } = require("@ipfs");
 const { v4: uuid } = require("uuid");
 const fs = require("fs");
 
+const SOLD_SALE = 3;
+const LISTED_SALE = 1;
+
 const resolvers = {
     Query: {
         ticketsSalesByAccountName: async (_, args, { dataSources }) => {
             let myEventsIds = [];
             const events = await dataSources.eventAPI.getEventsByCreator(dataSources.eventAPI.context.userId);
-            // if (events.data !== undefined){
             events.forEach((event) => {
                 myEventsIds.push(event.id);
             });
-            // }
-            //
-            var ticketsByEvent = [];
+            var ticketsByEventListed = [];
+            var ticketsByEventSold = [];
             for (const eventId of myEventsIds) {
                 const event = await dataSources.eventAPI.getEventById(eventId);
-                const eventTickets = await dataSources.atomicAssetsAPI.getEventTicketSalesByTemplateIds(
+                const eventTicketsListed = await dataSources.atomicAssetsAPI.getEventTicketSalesByTemplateIds(
                     event.nftTemplates,
+                    LISTED_SALE,
                 );
-                ticketsByEvent.push(eventTickets);
+                const eventTicketsSold = await dataSources.atomicAssetsAPI.getEventTicketSalesByTemplateIds(
+                    event.nftTemplates,
+                    SOLD_SALE,
+                );
+                ticketsByEventListed.push(eventTicketsListed);
+                ticketsByEventSold.push(eventTicketsSold);
             }
-            //
             for (let i = 0; i < events.length; i++) {
-                events[i].tickets = ticketsByEvent[i];
+                events[i].ticketsListedSale = ticketsByEventListed[i];
+                events[i].ticketsSoldSale = ticketsByEventSold[i];
             }
             return events;
         },
