@@ -41,6 +41,7 @@ const resolvers = {
                 const event = await dataSources.eventAPI.getEventById(eventId);
                 const eventTickets = await dataSources.atomicAssetsAPI.getEventTicketSalesByTemplateIds(
                     event.nftTemplates,
+                    LISTED_SALE,
                 );
                 ticketsByEvent.push(eventTickets);
             }
