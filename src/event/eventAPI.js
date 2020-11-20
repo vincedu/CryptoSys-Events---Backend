@@ -41,6 +41,25 @@ class EventAPI extends MongoDataSource {
         return await this.model.create(eventData);
     }
 
+    async modifyEvent(eventId, modifiedEvent) {
+        const { ...modifiedEventData } = modifiedEvent;
+
+        if (modifiedEvent.imageFile) {
+            const { createReadStream, filename, mimetype } = await modifiedEvent.imageFile;
+            const { Location } = await uploadFile(createReadStream, filename, mimetype);
+            modifiedEventData.image = Location;
+        }
+
+        console.log(`Modifying event ${eventId}: `, modifiedEventData);
+        return this.model
+            .findOneAndUpdate(
+                { _id: eventId, createdBy: this.context.userId },
+                { $set: modifiedEventData },
+                { new: true },
+            )
+            .exec();
+    }
+
     async linkNftTemplatesToEvent(eventId, templateIds) {
         return this.model
             .findOneAndUpdate({ _id: eventId }, { $set: { nftTemplates: templateIds } }, { new: true })

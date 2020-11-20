@@ -101,6 +101,10 @@ const resolvers = {
                 args.accountName,
                 args.collectionName,
             ),
+        ticketTemplatesByEventId: async (_, args, { dataSources }) => {
+            const event = await dataSources.eventAPI.getEventById(args.eventId);
+            return await dataSources.atomicAssetsAPI.getEventTicketTemplatesByTemplateIds(event.nftTemplates);
+        },
     },
     Mutation: {
         pinTicketImageToIpfs: async (_, args) => {

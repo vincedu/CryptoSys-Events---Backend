@@ -115,6 +115,7 @@ const typeDefs = gql`
         collectionsByAccountName(accountName: String!): [Collection]
         ticketsSalesByAccountName(createdBy: String!): [EventWithTicketsSales]
         ticketSchemasByAccountNameAndCollectionName(accountName: String!, collectionName: String!): [Schema]
+        ticketTemplatesByEventId(eventId: String): [TicketTemplate]
     }
 
     extend type Mutation {

@@ -8,6 +8,7 @@ const resolvers = {
     },
     Mutation: {
         createEvent: async (_, args, { dataSources }) => dataSources.eventAPI.createEvent(args.event),
+        modifyEvent: async (_, args, { dataSources }) => dataSources.eventAPI.modifyEvent(args.eventId, args.event),
         linkNftTemplatesToEvent: async (_, { eventId, templateIds }, { dataSources }) =>
             dataSources.eventAPI.linkNftTemplatesToEvent(eventId, templateIds),
     },

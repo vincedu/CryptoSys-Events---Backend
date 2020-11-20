@@ -141,6 +141,23 @@ class AtomicAssetsAPI extends RESTDataSource {
         return response.data.map((schema) => this.schemaReducer(schema));
     }
 
+    async getEventTicketTemplatesByTemplateIds(templateIds) {
+        if (!templateIds || templateIds.length === 0) {
+            return [];
+        }
+
+        const templateResponse = await this.getAtomicAssets("templates", {
+            ids: templateIds.join(","),
+        });
+
+        if (!templateResponse.success || !templateResponse.data || !Array.isArray(templateResponse.data)) {
+            console.log("ERROR: Unable get templates from AtomicAssets API.");
+            return;
+        }
+
+        return templateResponse.data.map((template) => this.ticketTemplateReducer(template));
+    }
+
     eventTicketSalesReducer(ticketSalesData, templates) {
         const originalTicketSalesTemplateMap = {};
         const resaleticketSalesTemplateMap = {};

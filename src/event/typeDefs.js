@@ -42,6 +42,24 @@ const typeDefs = gql`
         location: String
     }
 
+    input ModifyEventInput {
+        name: String
+        description: String
+        type: String
+        category: String
+        imageFile: Upload
+        languages: [String]
+        tags: [String]
+        location: ModifyEventLocationInput
+        startDate: DateTime
+        endDate: DateTime
+    }
+
+    input ModifyEventLocationInput {
+        type: String
+        location: String
+    }
+
     extend type Query {
         events: [Event]
         eventById(id: String): Event
@@ -60,6 +78,7 @@ const typeDefs = gql`
 
     extend type Mutation {
         createEvent(event: EventInput): Event
+        modifyEvent(eventId: String!, event: ModifyEventInput): Event
         linkNftTemplatesToEvent(eventId: String!, templateIds: [String]!): Event
     }
 `;
