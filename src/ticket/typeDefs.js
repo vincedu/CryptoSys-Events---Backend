@@ -33,6 +33,7 @@ const typeDefs = gql`
         seller: String!
         price: TicketSalePrice!
         ticket: Ticket!
+        time: String
     }
 
     type TicketSalePrice {

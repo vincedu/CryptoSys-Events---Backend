@@ -221,6 +221,7 @@ class AtomicAssetsAPI extends RESTDataSource {
             saleId: ticketSaleData.sale_id,
             offerId: ticketSaleData.offer_id,
             seller: ticketSaleData.seller,
+            time: ticketSaleData.updated_at_time,
             price: this.ticketPriceReducer(ticketSaleData.price),
             ticket: this.ticketReducer(ticketSaleData.assets[0]),
         };
