@@ -155,7 +155,35 @@ class AtomicAssetsAPI extends RESTDataSource {
             return;
         }
 
-        return templateResponse.data.map((template) => this.ticketTemplateReducer(template));
+        const templates = templateResponse.data.map((template) => this.ticketTemplateReducer(template));
+
+        for (const template of templates) {
+            const salesResponse = await this.getAtomicMarket("sales", {
+                state: "1,3", // 1: LISTED, 3: SOLD
+                marketplace: DEFAULT_MARKETPLACE,
+                template_id: template.templateId,
+                seller: template.creator,
+                order: "asc",
+                sort: "created",
+            });
+
+            if (
+                !salesResponse.success ||
+                !salesResponse.data ||
+                !Array.isArray(salesResponse.data) ||
+                salesResponse.data.length === 0
+            ) {
+                console.log(`ERROR: Unable get sales from AtomicMarket API for templateId ${template.templateId}.`);
+                return;
+            }
+
+            const originalSoldSales = salesResponse.data.filter((sale) => sale.state === 3);
+
+            template.originalSoldCount = originalSoldSales.length;
+            template.originalPrice = this.ticketPriceReducer(salesResponse.data[0].price);
+        }
+
+        return templates;
     }
 
     eventTicketSalesReducer(ticketSalesData, templates) {
@@ -224,6 +252,7 @@ class AtomicAssetsAPI extends RESTDataSource {
     ticketTemplateReducer(ticketTemplateData) {
         return {
             templateId: ticketTemplateData.template_id,
+            creator: ticketTemplateData.collection ? ticketTemplateData.collection.author : undefined,
             maxSupply: ticketTemplateData.max_supply,
             eventId: ticketTemplateData.immutable_data.eventId,
             name: ticketTemplateData.immutable_data.name,

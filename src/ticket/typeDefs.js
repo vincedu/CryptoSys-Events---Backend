@@ -17,11 +17,14 @@ const typeDefs = gql`
 
     type TicketTemplate {
         templateId: String!
-        maxSupply: String!
+        creator: String
+        maxSupply: Int!
         eventId: String!
         name: String!
         description: String!
         image: String!
+        originalSoldCount: Int
+        originalPrice: TicketSalePrice
     }
 
     type TicketSale {
@@ -33,8 +36,8 @@ const typeDefs = gql`
     }
 
     type TicketSalePrice {
-        amount: Float!
-        currency: String!
+        amount: Float
+        currency: String
     }
 
     type TicketSalesByTemplate {

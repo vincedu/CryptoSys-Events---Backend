@@ -62,7 +62,7 @@ class EventAPI extends MongoDataSource {
 
     async linkNftTemplatesToEvent(eventId, templateIds) {
         return this.model
-            .findOneAndUpdate({ _id: eventId }, { $set: { nftTemplates: templateIds } }, { new: true })
+            .findOneAndUpdate({ _id: eventId }, { $push: { nftTemplates: templateIds } }, { new: true })
             .exec();
     }
 }
