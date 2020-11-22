@@ -11,6 +11,7 @@ const createAlgoliaEvent = (event) => {
     newEvent.image = event.image;
     newEvent.objectID = event._id;
     newEvent.date = +event.startDate;
+    newEvent.languages = event.languages;
 
     index
         .saveObjects([newEvent])
