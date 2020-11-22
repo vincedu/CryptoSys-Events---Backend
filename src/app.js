@@ -18,6 +18,10 @@ server.applyMiddleware({ app });
 setupMongoose();
 setupFirebase();
 
+// To import all MongoDB events to Algolia
+// const { mongoToAlgolia } = require("@utils");
+// mongoToAlgolia()
+
 app.listen({ port: process.env.NODE_PORT }, () => {
     console.log(`Server started at http://localhost:${process.env.NODE_PORT}${server.graphqlPath}.`);
 });

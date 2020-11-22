@@ -17,14 +17,17 @@ const createAlgoliaEvents = (eventsArray) => {
     const algoliasearch = require("algoliasearch");
     const index = algoliasearch("VCNEJZ733V", "34110b7a7dda814d41a2851e341a2f6b").initIndex("events");
 
-    index
-        .saveObjects(eventsArray)
-        .then(({ objectIDs }) => {
-            console.log(objectIDs);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
+    return new Promise((resolve, reject) => {
+        index
+            .saveObjects(eventsArray)
+            .then(({ objectIDs }) => {
+                console.log(objectIDs);
+                resolve(objectIDs);
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
 };
 
 const mongoToAlgolia = async () => {
