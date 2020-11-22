@@ -1,31 +1,6 @@
 const { MongoDataSource } = require("apollo-datasource-mongodb");
 const { uploadFile } = require("@utils");
 
-const createAlgoliaEvent = (event) => {
-    const algoliasearch = require("algoliasearch");
-    const index = algoliasearch("VCNEJZ733V", "34110b7a7dda814d41a2851e341a2f6b").initIndex("events");
-
-    const newEvent = {};
-    newEvent.name = event.name;
-    newEvent.description = event.description;
-    newEvent.tags = event.tags;
-    newEvent.category = event.category;
-    newEvent.type = event.type;
-    newEvent.image = event.image;
-    newEvent.objectID = event._id;
-    newEvent.date = +event.startDate;
-
-    index
-        .saveObjects([newEvent])
-        .then(({ objectIDs }) => {
-            console.log("Added to Algolia");
-            console.log(objectIDs);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-};
-
 class EventAPI extends MongoDataSource {
     async getEvents() {
         return this.model.find({}).exec();
@@ -67,7 +42,6 @@ class EventAPI extends MongoDataSource {
         }
         eventData.image = Location;
         console.log("Creating event: ", eventData);
-        createAlgoliaEvent(eventData);
         return await this.model.create(eventData);
     }
 
