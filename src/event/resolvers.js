@@ -12,7 +12,7 @@ const resolvers = {
     },
     Mutation: {
         createEvent: async (_, args, { dataSources }) =>
-            dataSources.eventAPI.createEvent(args.event).then((eventCreated) => {
+            await dataSources.eventAPI.createEvent(args.event).then((eventCreated) => {
                 createAlgoliaEvents([formatEvent(eventCreated)]);
                 return eventCreated;
             }),
