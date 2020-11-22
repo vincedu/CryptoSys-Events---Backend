@@ -1,5 +1,9 @@
-const { uploadFile } = require("./fileUpload") 
+const { uploadFile } = require("./fileUpload");
+const { formatEvent, mongoToAlgolia, createAlgoliaEvents } = require("./algolia");
 
 module.exports = {
-    uploadFile
-}
+    uploadFile,
+    formatEvent,
+    mongoToAlgolia,
+    createAlgoliaEvents,
+};
