@@ -63,6 +63,7 @@ const typeDefs = gql`
     extend type Query {
         events: [Event]
         eventById(id: String): Event
+        eventsByIds(ids: [String]): [Event]
         eventsByParam(
             category: String
             name: String

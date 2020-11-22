@@ -5,6 +5,7 @@ const resolvers = {
         eventsByParam: async (_, args, { dataSources }) => dataSources.eventAPI.getEventsByParam(args),
         eventsByCreator: async (_, { dataSources }) =>
             dataSources.eventAPI.getEventsByCreator(dataSources.eventAPI.context.userId),
+        eventsByIds: async (_, args, { dataSources }) => dataSources.eventAPI.getEventsByIds(args.ids),
     },
     Mutation: {
         createEvent: async (_, args, { dataSources }) => dataSources.eventAPI.createEvent(args.event),

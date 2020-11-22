@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "dependencies": {
     "@pinata/sdk": "^1.1.11",
+    "algoliasearch": "^4.8.0",
     "apollo-datasource-mongodb": "^0.2.8",
     "apollo-datasource-rest": "^0.9.5",
     "apollo-server-express": "^2.18.1",
