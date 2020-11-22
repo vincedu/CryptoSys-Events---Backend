@@ -27,6 +27,7 @@ const createAlgoliaEvent = (event) => {
 const resolvers = {
     Query: {
         events: async (_, __, { dataSources }) => dataSources.eventAPI.getEvents(),
+        distinct: async (_, args, { dataSources }) => dataSources.eventAPI.getDistinct(args.attribute),
         eventById: async (_, args, { dataSources }) => dataSources.eventAPI.getEventById(args.id),
         eventsByParam: async (_, args, { dataSources }) => dataSources.eventAPI.getEventsByParam(args),
         eventsByCreator: async (_, { dataSources }) =>

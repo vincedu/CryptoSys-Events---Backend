@@ -10,6 +10,10 @@ class EventAPI extends MongoDataSource {
         return this.model.findById(eventId).exec();
     }
 
+    async getDistinct(attribute) {
+        return this.model.distinct(attribute).exec();
+    }
+
     async getEventsByIds(eventsIds) {
         return this.model.find({ _id: { $in: eventsIds } }).exec();
     }

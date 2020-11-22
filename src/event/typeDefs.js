@@ -64,6 +64,7 @@ const typeDefs = gql`
         events: [Event]
         eventById(id: String): Event
         eventsByIds(ids: [String]): [Event]
+        distinct(attribute: String): [String]
         eventsByParam(
             category: String
             name: String
