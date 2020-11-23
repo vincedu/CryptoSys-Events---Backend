@@ -117,7 +117,7 @@ const typeDefs = gql`
         ticketsForEventsByAccountName(accountName: String!): EventTickets
         ticketByAssetId(assetId: String!): Ticket
         collectionsByAccountName(accountName: String!): [Collection]
-        ticketsSalesByAccountName(createdBy: String!): [EventWithTicketsSales]
+        ticketsSalesByAccountName: [EventWithTicketsSales]
         ticketSchemasByAccountNameAndCollectionName(accountName: String!, collectionName: String!): [Schema]
         ticketTemplatesByEventId(eventId: String): [TicketTemplate]
     }
