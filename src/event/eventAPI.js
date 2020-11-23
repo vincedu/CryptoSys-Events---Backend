@@ -11,7 +11,7 @@ class EventAPI extends MongoDataSource {
     }
 
     async getDistinct(attribute) {
-        return this.model.distinct(attribute).exec();
+        return this.model.distinct(attribute, { startDate: { $gte: Date.now() } }).exec();
     }
 
     async getEventsByIds(eventsIds) {
