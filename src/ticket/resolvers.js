@@ -8,13 +8,7 @@ const LISTED_SALE = 1;
 const resolvers = {
     Query: {
         ticketsSalesByAccountName: async (_, args, { dataSources }) => {
-            // let myEventsIds = [];
             const events = await dataSources.eventAPI.getEventsByCreator(dataSources.eventAPI.context.userId);
-            // events.forEach((event) => {
-            //     myEventsIds.push(event.id);
-            // });
-            var ticketsByEventListed = [];
-            var ticketsByEventSold = [];
             await Promise.all(
                 events.map(async (ev, i) => {
                     const event = await dataSources.eventAPI.getEventById(ev.id);
@@ -31,11 +25,6 @@ const resolvers = {
                     events[i].ticketsSoldSale = eventTicketsSold;
                 }),
             );
-            // for (let i = 0; i < events.length; i++) {
-            //     events[i].ticketsListedSale = ticketsByEventListed[i];
-            //     events[i].ticketsSoldSale = ticketsByEventSold[i];
-            // }
-            console.log("EVENTS:", events);
             return events;
         },
 
