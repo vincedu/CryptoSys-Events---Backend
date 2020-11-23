@@ -29,7 +29,7 @@ class EventAPI extends MongoDataSource {
                 ...(args.type && { type: args.type }),
                 ...(args.languages && { languages: { $in: args.languages } }),
                 ...(args.tags && { tags: { $in: args.tags } }),
-                ...(args.date && { startDate: new Date(args.date) }),
+                ...{ startDate: { $gte: Date.now() } },
                 ...(args.name && { name: args.name }),
             })
             .skip(args.offset)
