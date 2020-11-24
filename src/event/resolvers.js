@@ -16,7 +16,11 @@ const resolvers = {
                 createAlgoliaEvents([formatEvent(eventCreated)]);
                 return eventCreated;
             }),
-        modifyEvent: async (_, args, { dataSources }) => dataSources.eventAPI.modifyEvent(args.eventId, args.event),
+        modifyEvent: async (_, args, { dataSources }) =>
+            await dataSources.eventAPI.modifyEvent(args.eventId, args.event).then((modifiedEvent) => {
+                createAlgoliaEvents([formatEvent(modifiedEvent)]);
+                return modifiedEvent;
+            }),
         linkNftTemplatesToEvent: async (_, { eventId, templateIds }, { dataSources }) =>
             dataSources.eventAPI.linkNftTemplatesToEvent(eventId, templateIds),
     },
