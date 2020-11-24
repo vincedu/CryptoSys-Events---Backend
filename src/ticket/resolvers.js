@@ -7,7 +7,7 @@ const LISTED_SALE = 1;
 
 const resolvers = {
     Query: {
-        ticketsSalesByAccountName: async (_, args, { dataSources }) => {
+        ticketsSalesByAccountName: async (_, __, { dataSources }) => {
             const events = await dataSources.eventAPI.getEventsByCreator(dataSources.eventAPI.context.userId);
             await Promise.all(
                 events.map(async (ev, i) => {
