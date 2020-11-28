@@ -36,6 +36,9 @@ describe("Event resolver test", () => {
 
         dataSources = {
             eventAPI: new EventAPI(EventModel),
+            userAPI: {
+                getUserDataByUserId: () => "mockDisplayName",
+            },
         };
         dataSources.eventAPI.context = { userId: MOCK_USER_ID };
     });

@@ -4,7 +4,11 @@ const resolvers = {
     Query: {
         events: async (_, __, { dataSources }) => dataSources.eventAPI.getEvents(),
         distinct: async (_, args, { dataSources }) => dataSources.eventAPI.getDistinct(args.attribute),
-        eventById: async (_, args, { dataSources }) => dataSources.eventAPI.getEventById(args.id),
+        eventById: async (_, args, { dataSources }) => {
+            const event = await dataSources.eventAPI.getEventById(args.id);
+            event.createdByDisplayName = await dataSources.userAPI.getUserDataByUserId(event.createdBy);
+            return event;
+        },
         eventsByParam: async (_, args, { dataSources }) => dataSources.eventAPI.getEventsByParam(args),
         eventsByCreator: async (_, { dataSources }) =>
             dataSources.eventAPI.getEventsByCreator(dataSources.eventAPI.context.userId),

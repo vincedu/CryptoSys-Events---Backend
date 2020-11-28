@@ -2,6 +2,7 @@ const { mergeResolvers } = require("@graphql-tools/merge");
 const { GraphQLDateTime } = require("graphql-iso-date");
 const event = require("./event");
 const ticket = require("./ticket");
+const user = require("./user");
 const { getUserId } = require("./auth/user");
 
 const typeDefs = `
@@ -32,6 +33,7 @@ const schema = {
     dataSources: () => ({
         eventAPI: new event.EventAPI(event.EventModel),
         atomicAssetsAPI: new ticket.AtomicAssetsAPI(),
+        userAPI: new user.UserAPI(),
     }),
 };
 
