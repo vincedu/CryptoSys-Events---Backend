@@ -9,12 +9,12 @@ class UserAPI extends RESTDataSource {
     async getUserDataByUserId(userId) {
         const userDataResponse = await this.get(`user/${userId}`);
 
-        if (!userDataResponse.success || !userDataResponse.data) {
+        if (!userDataResponse.displayName) {
             console.log(`ERROR: Unable get user data for user ${userId}.`);
             return;
         }
 
-        return userDataResponse.data;
+        return userDataResponse.displayName;
     }
 }
 
