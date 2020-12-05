@@ -16,8 +16,8 @@ AWS_SECRET_ACCESS_KEY = AWS Secret access key
 AWS_S3_REGION = AWS Region in which S3 db is hosted
 AWS_S3_BUCKET = AWS S3 bucket name
 
-PINATA_API_KEY = c6be6d92fb16ddce6453
-PINATA_SECRET_API_KEY = a603f42dd1e724213c320f536c2f074f5f371da8118753fbec849aac693e3653
+PINATA_API_KEY = API key for Pinata
+PINATA_SECRET_API_KEY = Secret API key for Pinata
 
 GOOGLE_APPLICATION_CREDENTIALS = Google service account key
 
