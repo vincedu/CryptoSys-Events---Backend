@@ -46,12 +46,12 @@ ALGOLIASEARCH_API_KEY = Admin API key for Algoliasearch
 ## Tech/framework used
 
 ### Apollo Server V2 / Express.js
-The server is built with the Express.js integration of the Apollo GraphQL Server.\
+The server is built with the Express.js integration of the Apollo GraphQL Server.
 
 https://www.apollographql.com/docs/apollo-server/
 
 ### Mongoose
-Access to the MongoDB database is done using the Mongoose package. \
+Access to the MongoDB database is done using the Mongoose package.
 
 https://mongoosejs.com/docs/index.html
 
