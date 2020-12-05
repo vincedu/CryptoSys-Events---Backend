@@ -1,5 +1,7 @@
 const algoliasearch = require("algoliasearch");
-const index = algoliasearch("VCNEJZ733V", "34110b7a7dda814d41a2851e341a2f6b").initIndex("events");
+const index = algoliasearch(process.env.ALGOLIASEARCH_APPLICATION_ID, process.env.ALGOLIASEARCH_API_KEY).initIndex(
+    "events",
+);
 
 const formatEvent = (event) => {
     const newEvent = {};
