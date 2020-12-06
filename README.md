@@ -11,20 +11,31 @@ The queries and mutations that are supported for events or tickets can be found 
 
 These external dependencies need to be setup beforehand for the backend to fully function properly.
 
-#### MongoDB
+##### MongoDB
 Event data is stored in a MongoDB database. That database need to be setup and the MongoDB URI needs to be configured in the environment variables (see environment variables section). MongoDB Atlas is a simple solution for hosting a MongoDB database in the cloud. Using Atlas, the MongoDB URI can simply be found in the Atlas console. 
 
-#### Firebase
+##### Firebase
 Firebase is used in the application for authentification and storing user data, such as display names and links to eos account names. To be able to run the backend, a Firebase project needs to be initialized and configured (environment variables should be set, see environment variables section). The user data API (source code located in the our firebase repository) should also be deployed to the Firebase project's Cloud Functions to enable the backend to fetch user data.
 
-#### Pinata
+##### Pinata
 The Pinata API is used to upload and pin images to the IPFS. The Pinata API is abstracted for our frontend by our backend GraphQL API. A pinata account should be setup and configured in the environment variables.
 
-#### Algoliasearch
+##### Algoliasearch
 Algoliasearch is used in the application for the event search and filtering functionalities. The Algoliasearch API client package is used in the backend to allow for event data indexing on event creation. An Algolia account should be setup and configured in the environment variables.
 
-#### AWS S3
+##### AWS S3
 AWS S3 is simply used for event image storage. An AWS S3 bucket needs to be created and configured in the environment variables. Additionally, public access needs to be granted to a `/public/` folder in your S3 bucket to allow users to see event images that are uploaded.
+
+##### AtomicAssets API
+The backend application makes calls to the AtomicAssets API to fetch data for assets and to the AtomicMarket API for asset sales.
+
+WAX testnet:
+- AtomicAssets: https://test.wax.api.atomicassets.io/atomicassets/docs/
+- AtomicMarket: https://test.wax.api.atomicassets.io/atomicmarket/docs/
+WAX net:
+- AtomicAssets: https://wax.api.atomicassets.io/atomicassets/docs/
+- AtomicMarket: https://wax.api.atomicassets.io/atomicmarket/docs/
+
 
 ## Configuration
 
