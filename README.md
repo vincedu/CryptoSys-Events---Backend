@@ -27,7 +27,7 @@ Algoliasearch is used in the application for the event search and filtering func
 AWS S3 is simply used for event image storage. An AWS S3 bucket needs to be created and configured in the environment variables. Additionally, public access needs to be granted to a `/public/` folder in your S3 bucket to allow users to see event images that are uploaded.
 
 ##### AtomicAssets API
-The backend application makes calls to the AtomicAssets API to fetch data for assets and to the AtomicMarket API for asset sales.
+The backend application makes calls to the AtomicAssets API to fetch data for assets and to the AtomicMarket API for asset sales. Nothing needs to be setup, but the backend server depends on the AtomicAssets API hosted by pink.network. Here are the links to the documentation for those APIs:
 
 ###### WAX testnet:
 - AtomicAssets: https://test.wax.api.atomicassets.io/atomicassets/docs/
@@ -36,6 +36,8 @@ The backend application makes calls to the AtomicAssets API to fetch data for as
 - AtomicAssets: https://wax.api.atomicassets.io/atomicassets/docs/
 - AtomicMarket: https://wax.api.atomicassets.io/atomicmarket/docs/
 
+The source code for these hosted APIs are open sourced. Therefore, if need be, you can host the API yourself.
+See github repo for more information: https://github.com/pinknetworkx/eosio-contract-api 
 
 ## Configuration
 
@@ -63,12 +65,33 @@ ALGOLIASEARCH_APPLICATION_ID = Application ID for Algoliasearch
 ALGOLIASEARCH_API_KEY = Admin API key for Algoliasearch
 ```
 
-## To start development
+## Available Scripts
+
+In the project directory, you can run:
+
+### `npm start`
+
+Runs the application.
+
+### `npm test`
+
+Runs tests for the application.
+
+### `npm run lint`
+
+Runs eslint through the entire project.
+
+### `npm clean`
+
+Deletes the whole `node_modules` folder.
+
+
+## Development tools
 
 ### VSCode specific
 
 - Install eslint extension from Marketplace
-- Set eslint as defaultFormatter for workspace and set format on save:
+- Set eslint as defaultFormatter for workspace and turn on format on save:
 
 ```
 "editor.formatOnSave": true,
