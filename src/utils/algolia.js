@@ -2,8 +2,9 @@ const algoliasearch = require("algoliasearch");
 const index = algoliasearch(process.env.ALGOLIASEARCH_APPLICATION_ID, process.env.ALGOLIASEARCH_API_KEY).initIndex(
     "events",
 );
+const fetch = require("node-fetch");
 
-const formatEvent = (event) => {
+const formatEvent = async (event) => {
     const newEvent = {};
     newEvent.name = event.name;
     newEvent.description = event.description;
@@ -14,7 +15,24 @@ const formatEvent = (event) => {
     newEvent.objectID = event._id;
     newEvent.date = +event.startDate;
     newEvent.languages = event.languages;
-
+    if (event.location.type === "venue") {
+        newEvent.location = event.location.location;
+        // Fetch locations longitude and latitude
+        const location = encodeURI(event.location.location);
+        await fetch(
+            "https://maps.googleapis.com/maps/api/geocode/json?address="
+                .concat(location)
+                .concat("&key=AIzaSyDZHQdnlyuo3spiKtfixH818xkohVXExh8"),
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                newEvent._geoloc = {
+                    lat: data.results[0].geometry.location.lat,
+                    lng: data.results[0].geometry.location.lng,
+                };
+            })
+            .catch();
+    }
     return newEvent;
 };
 
@@ -38,7 +56,7 @@ const mongoToAlgolia = async () => {
 
     const events = await resolvers.Query.events(null, null, { dataSources }).catch((err) => console.log(err));
 
-    await createAlgoliaEvents(events.map((event) => formatEvent(event)));
+    await createAlgoliaEvents(events.map(async (event) => [await formatEvent(event)]));
 };
 
 module.exports = {

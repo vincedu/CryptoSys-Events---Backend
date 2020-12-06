@@ -16,13 +16,15 @@ const resolvers = {
     },
     Mutation: {
         createEvent: async (_, args, { dataSources }) =>
-            await dataSources.eventAPI.createEvent(args.event).then((eventCreated) => {
-                createAlgoliaEvents([formatEvent(eventCreated)]);
+            await dataSources.eventAPI.createEvent(args.event).then(async (eventCreated) => {
+                const event = await formatEvent(eventCreated);
+                await createAlgoliaEvents([event]);
                 return eventCreated;
             }),
         modifyEvent: async (_, args, { dataSources }) =>
-            await dataSources.eventAPI.modifyEvent(args.eventId, args.event).then((modifiedEvent) => {
-                createAlgoliaEvents([formatEvent(modifiedEvent)]);
+            await dataSources.eventAPI.modifyEvent(args.eventId, args.event).then(async (modifiedEvent) => {
+                const event = await formatEvent(modifiedEvent);
+                await createAlgoliaEvents([event]);
                 return modifiedEvent;
             }),
         linkNftTemplatesToEvent: async (_, { eventId, templateIds }, { dataSources }) =>
