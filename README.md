@@ -29,10 +29,10 @@ AWS S3 is simply used for event image storage. An AWS S3 bucket needs to be crea
 ##### AtomicAssets API
 The backend application makes calls to the AtomicAssets API to fetch data for assets and to the AtomicMarket API for asset sales.
 
-WAX testnet:
+###### WAX testnet:
 - AtomicAssets: https://test.wax.api.atomicassets.io/atomicassets/docs/
 - AtomicMarket: https://test.wax.api.atomicassets.io/atomicmarket/docs/
-WAX net:
+###### WAX net:
 - AtomicAssets: https://wax.api.atomicassets.io/atomicassets/docs/
 - AtomicMarket: https://wax.api.atomicassets.io/atomicmarket/docs/
 
